@@ -238,11 +238,9 @@ class App(Base):
             )
 
         # Create the socket app. Note event endpoint constant replaces the default 'socket.io' path.
-        self.socket_app = (
-            ASGIApp(self.sio, socketio_path="")
-            if not self.socket_app
-            else self.socket_app
-        )
+        if not self.socket_app:
+            self.socket_app = ASGIApp(self.sio, socketio_path="")
+
         namespace = config.get_event_namespace()
 
         # Create the event namespace and attach the main app. Not related to any paths.
